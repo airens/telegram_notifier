@@ -9,9 +9,9 @@ pip install telegram-notifier
 ```
 ## Usage:
 ```python
-	from telegram_notifier import TelegramNotifier
-    import os
-    token = os.environ.get("TELEGRAM_TOKEN")
-    notifier = TelegramNotifier(token, parse_mode="HTML")
-    notifier.send("<b>Test bold text</b> and normal text")
+from telegram_notifier import TelegramNotifier
+import os
+token = os.environ.get("TELEGRAM_TOKEN")
+notifier = TelegramNotifier(token, parse_mode="HTML")
+notifier.send("<b>Test bold text</b> and normal text")
 ```
