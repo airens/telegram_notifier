@@ -2,7 +2,7 @@ from setuptools import setup
 from os.path import join, dirname
 
 setup(name='telegram-notifier',
-      version='0.1',
+      version='0.2',
       description='Simple telegram notifier',
       url='http://github.com/airens/telegram_notifier',
       author='Valeriy Chistyakov',
