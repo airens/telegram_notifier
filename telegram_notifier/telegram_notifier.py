@@ -6,12 +6,25 @@ class TelegramNotifier:
         self._token = token
         self._parse_mode = parse_mode
         self._chat_id = None
-        response = requests.get(f"https://api.telegram.org/bot{self._token}/getUpdates", timeout=10)
-        if response.status_code == 200:
-            self._chat_id = response.json()['result'][-1]['message']['chat']['id']
-        assert self._chat_id is not None, "Couldn't get chat_id!"
+        self._get_chat_id()
+
+    def _get_chat_id(self):
+        try:
+            data = {
+                "offset": 0
+            }
+            response = requests.get(f"https://api.telegram.org/bot{self._token}/getUpdates", data=data, timeout=10)
+            if response.status_code == 200:
+                self._chat_id = response.json()['result'][-1]['message']['chat']['id']
+        except Exception as e:
+            self._chat_id = None
+            print("Couldn't get chat_id!\n\t", e)
 
     def send(self, msg:str):
+        if self._chat_id is None:
+            self._get_chat_id()
+            print("chat_id is none, nothing sent!")
+            return
         data = {
             "chat_id": self._chat_id,
             "text": msg
