@@ -2,11 +2,13 @@ import requests
 
 
 class TelegramNotifier:
-    def __init__(self, token: str, parse_mode: str = None):
+    def __init__(self, token: str, chat_id: str = None, parse_mode: str = None):
         self._token = token
         self._parse_mode = parse_mode
-        self._chat_id = None
-        self._get_chat_id()
+        if chat_id is None:
+            self._get_chat_id()
+        else:
+            self._chat_id = chat_id
 
     def _get_chat_id(self):
         try:
@@ -20,7 +22,7 @@ class TelegramNotifier:
             self._chat_id = None
             print("Couldn't get chat_id!\n\t", e)
 
-    def send(self, msg:str):
+    def send(self, msg: str):
         if self._chat_id is None:
             self._get_chat_id()
             print("chat_id is none, nothing sent!")
