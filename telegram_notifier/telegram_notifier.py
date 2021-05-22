@@ -2,7 +2,7 @@ import requests
 
 
 class TelegramNotifier:
-    def __init__(self, token: str, chat_id: str = None, parse_mode: str = None):
+    def __init__(self, token: str, parse_mode: str = None, chat_id: str = None,):
         self._token = token
         self._parse_mode = parse_mode
         if chat_id is None:
