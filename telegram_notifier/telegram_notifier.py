@@ -2,7 +2,8 @@ import requests
 
 
 class TelegramNotifier:
-    def __init__(self, token: str, parse_mode: str = None, chat_id: str = None):
+    def __init__(self, token: str, parse_mode: str = None, chat_id: str = None, disable_preview: str = False):
+        self.preview = disable_preview
         self._token = token
         self._parse_mode = parse_mode
         if chat_id is None:
@@ -29,12 +30,13 @@ class TelegramNotifier:
             return
         data = {
             "chat_id": self._chat_id,
-            "text": msg
+            "text": msg,
+            "disable_web_page_preview": self.preview
         }
         if self._parse_mode:
             data["parse_mode"] = self._parse_mode
         try:
-            response = requests.get(f"https://api.telegram.org/bot{self._token}/sendMessage", data=data, timeout=10)
+            response = requests.post(f"https://api.telegram.org/bot{self._token}/sendMessage", data=data, timeout=10)
             if response.status_code != 200 or response.json()["ok"] is not True:
                 print(f"Failed to send notification:\n\tstatus_code={response.status_code}\n\tjson:\n\t{response.json()}")
         except Exception as e:
